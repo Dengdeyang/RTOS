@@ -1,6 +1,6 @@
 /********************************************************************************
   * @file    soft_timer.c
-  * @author  ddy
+  * @author  邓得洋
   * @version V0.1
   * @date    2020-08-03
   * @brief   软件定时器数量可在内存允许条件下根据需要定义，突破硬件定时器的数量限制
@@ -71,10 +71,10 @@ void Set_Soft_Timer(Soft_Timer_Handle timer_id,u32 tick_count)
  * @brief   在所有RTOS任务中，软件定时器守护任务的优先级最高，RTOS心跳中断中判断到有软件定时器ready会触发该任务，
             在该任务中进行调用软件定时器对应的回调函数
  * @param   
-			*timer_id：         软件定时器的id变量地址
-			timer_switch_flag： 开启或关闭软件定时器
-			user_tick_count：   用户指定软件定时器的定时值(RTOS心跳节拍数)
-			timer_function      软件定时器对应回调函数
+		*timer_id：         软件定时器的id变量地址
+		timer_switch_flag： 开启或关闭软件定时器
+		user_tick_count：   用户指定软件定时器的定时值(RTOS心跳节拍数)
+		timer_function      软件定时器对应回调函数
  * @retval  NO                      
  */
 void Soft_Timer_Init(Soft_Timer_Handle *timer_id,Timer_Switch timer_switch_flag,u32 user_tick_count,void (*timer_function)(void))
