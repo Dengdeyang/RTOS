@@ -7,10 +7,10 @@
 //-------------软件定时器结构体---------------------//
 typedef struct
 {
-	u8   timer_statue;
-	u8   start_timer_flag;
-	u32  system_user_tick_count;
-	u32  user_tick_count;
+	volatile u8   timer_statue;
+	volatile u8   start_timer_flag;
+	volatile u32  system_user_tick_count;
+	volatile u32  user_tick_count;
     void (*callback_function)(void);	
 }Soft_Timer_Unit;
 
