@@ -21,11 +21,11 @@
 
 //---------------------RTOS 任务列表，系统栈及其他中间全局变量定义区----------------------------//
 Task_Unit Task_List[TASK_NUM]={0};
-uint32_t PSP_array[TASK_NUM]; 
+volatile uint32_t PSP_array[TASK_NUM]; 
 
-uint32_t SysTick_count = 0;
-uint32_t current_task_id = 0;
-uint32_t next_task_id = 1;
+volatile uint32_t SysTick_count = 0;
+volatile uint32_t current_task_id = 0;
+volatile uint32_t next_task_id = 1;
 void Idle_task(void);
 int __svc(0x00) SVC(void);
 
