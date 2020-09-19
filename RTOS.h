@@ -26,10 +26,10 @@ typedef struct
 {
 	u16 *task_id_point;
 	char *task_name;
-	u8 task_statue;
-	u8 task_pend_statue;
+	volatile u8 task_statue;
+	volatile u8 task_pend_statue;
 	u16 task_priority; 
-	u32 task_delay_ms;
+	volatile u32 task_delay_ms;
 	unsigned int *task_stack;
 	u16 task_stack_size_words;
 	void *task_function;	
