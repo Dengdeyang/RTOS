@@ -7,10 +7,10 @@
 //---------------------事件标志组结构体--------------------------//
 typedef struct
 {
-	u32 Event;
+	volatile u32 Event;
 	u32 task_care_bit_list[TASK_NUM];
 	u8  task_relate_type_list[TASK_NUM];
-	Task_Handle task_block_list[TASK_NUM];
+	volatile Task_Handle task_block_list[TASK_NUM];
 }Event_Handle;
 
 //---------------------二选一状态枚举量--------------------------//
