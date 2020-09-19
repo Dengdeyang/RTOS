@@ -21,9 +21,10 @@ typedef enum
 //队列节点结构体
 struct Queue_node
 {
-	u32 data;
+	volatile u32 data;
 	struct Queue_node *next;
 };
+
 typedef struct Queue_node Queue_point;
 
 //队列结构体
@@ -31,15 +32,15 @@ typedef struct
 {
 	Queue_point *head;
 	Queue_point *tail;
-	u32    queue_size;
-	Task_Handle task_block_list[TASK_NUM];
+	volatile u32    queue_size;
+	volatile Task_Handle task_block_list[TASK_NUM];
 }Queue;
 
 //信号量结构体
 typedef struct
 {
-	char Semaphore;
-	Task_Handle task_block_list[TASK_NUM];
+	volatile char Semaphore;
+	volatile Task_Handle task_block_list[TASK_NUM];
 }Semaphore_Handle;
 
 typedef Queue * Queue_Handle;
