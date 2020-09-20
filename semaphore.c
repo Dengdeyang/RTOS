@@ -64,7 +64,7 @@ static char push(Queue *queue_data,u32 push_data)
  */
 static char pull(Queue *queue_data,u32 *pull_data)
 {
-    Queue_point *p;
+    Queue_point *p=NULL;
 	char pull_action_result;
 	
 	if(!queue_data->queue_size) 
@@ -83,6 +83,7 @@ static char pull(Queue *queue_data,u32 *pull_data)
 		p = queue_data->head;
 		queue_data->head = queue_data->head->next;
 		free(p);
+		p=NULL;
 		queue_data->queue_size--;
 		pull_action_result = Success;
 	}
