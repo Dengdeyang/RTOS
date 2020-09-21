@@ -206,7 +206,7 @@ void RTOS_Init(void)
 	NVIC_SetPriority(PendSV_IRQn,0xFF);
 	SysTick_Config(SysTick_Rhythm*(SystemCoreClock/1000000));
 	__set_CONTROL(0x03);
-	__ISB();
+	__ISB();  //指令同步隔离。它会清洗流水线，以保证所有它前面的指令都执行完毕之后，才执行它后面的指令。
 	Idle_task();
 }
 
