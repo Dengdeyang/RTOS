@@ -24,7 +24,7 @@
 static char push(Queue *queue_data,u32 push_data)
 {
 	char push_action_result;
-	
+	taskENTER_CRITICAL();
 	if(queue_data->queue_size==0)
 	{
 		queue_data->tail->data = push_data;
@@ -50,6 +50,7 @@ static char push(Queue *queue_data,u32 push_data)
 			push_action_result = Success;
 		}
 	}
+	taskEXIT_CRITICAL();
 	return push_action_result;
 }
 
@@ -64,9 +65,9 @@ static char push(Queue *queue_data,u32 push_data)
  */
 static char pull(Queue *queue_data,u32 *pull_data)
 {
-    Queue_point *p=NULL;
+        Queue_point *p=NULL;
 	char pull_action_result;
-	
+	taskENTER_CRITICAL();
 	if(!queue_data->queue_size) 
 	{
 		pull_action_result = Fail;
@@ -87,6 +88,7 @@ static char pull(Queue *queue_data,u32 *pull_data)
 		queue_data->queue_size--;
 		pull_action_result = Success;
 	}
+	taskEXIT_CRITICAL();
 	return pull_action_result;
 }
 
@@ -101,7 +103,7 @@ Queue_Handle Creat_queue(void)
 	queue_x->queue_size = 0;
 
 	queue_x->head->data = 0;
-    queue_x->head->next = NULL;
+        queue_x->head->next = NULL;
 
 	if((queue_x==NULL)||(queue_x->head==NULL))   return NULL;
 	else                                         return  queue_x;
@@ -197,8 +199,10 @@ char Semaphore_Take(Task_Handle Task_x,Semaphore_Type type,Semaphore_Handle *Sem
 {
 	if(Semaphore->Semaphore)  
 	{
+		taskENTER_CRITICAL();
 		if(type == Count_Semaphore)  Semaphore->Semaphore -= 1;
-		else 						 Semaphore->Semaphore = 0;
+		else 			     Semaphore->Semaphore = 0;
+		taskEXIT_CRITICAL();
 		return Success;
 	}
 	else                  
@@ -209,9 +213,10 @@ char Semaphore_Take(Task_Handle Task_x,Semaphore_Type type,Semaphore_Handle *Sem
 			Task_List[Task_x].task_statue = TASK_BLOCK;
 			Task_List[Task_x].task_pend_statue = TASK_BLOCK;
 			while(Task_List[Task_x].task_statue == TASK_BLOCK);
-			
+			taskENTER_CRITICAL();
 			if((type == Count_Semaphore)&&(Semaphore->Semaphore))    Semaphore->Semaphore -= 1;
-		    else 						                             Semaphore->Semaphore = 0;
+		        else 						         Semaphore->Semaphore = 0;
+			taskEXIT_CRITICAL();
 			return Success;
 		}
 		else if(delay_ms == 0)  return Fail;
@@ -222,8 +227,10 @@ char Semaphore_Take(Task_Handle Task_x,Semaphore_Type type,Semaphore_Handle *Sem
 			Semaphore->task_block_list[Task_x] = Semaphore_Unblock;
 			if(Semaphore->Semaphore) 
 			{
+				taskENTER_CRITICAL();
 				if(type == Count_Semaphore)  Semaphore->Semaphore -= 1;
-				else 						 Semaphore->Semaphore = 0;
+				else 			     Semaphore->Semaphore = 0;
+				taskEXIT_CRITICAL();
 				return Success;
 			}
 			else  return Fail;
@@ -244,9 +251,10 @@ char Semaphore_Take(Task_Handle Task_x,Semaphore_Type type,Semaphore_Handle *Sem
 void Semaphore_Give(Semaphore_Type type,Semaphore_Handle *Semaphore)
 {
 	u16 i;
+	taskENTER_CRITICAL();
 	if(type == Count_Semaphore)  Semaphore->Semaphore += 1;
-	else 						 Semaphore->Semaphore = 1;
-	
+	else 			     Semaphore->Semaphore = 1;
+	taskEXIT_CRITICAL();
 	for(i=TASK_NUM-1;i>0;i--)
 	{
 		if(Semaphore->task_block_list[i]==Semaphore_Block)  
